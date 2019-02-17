@@ -10,6 +10,6 @@ class GildedRose {
     }
 
     public void updateInventoryQuality() {
-        Stream.of(items).forEach(Item::updateQuality);
+        Stream.of(items).forEach(Item::decreaseSellInAndUpdateQuality);
     }
 }

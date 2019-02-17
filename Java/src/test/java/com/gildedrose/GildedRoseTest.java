@@ -6,8 +6,23 @@ import static org.junit.Assert.assertEquals;
 
 public class GildedRoseTest {
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void qualityOfItemCannotBeNegative() {
+        new Item("foo", 0, -1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void sulfurasMustBe80() {
+        new Item("Sulfuras, Hand of Ragnaros", 0, 70);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void qualityCannotBeHigherThan50() {
+        new Item("foo", 0, 51);
+    }
+
+    @Test
+    public void qualityOfItemCannotBeNegativeOnUpdate() {
         Item[] items = new Item[] { new Item("foo", 0, 1), new Item("foo", 1, 0)};
         GildedRose app = new GildedRose(items);
         app.updateInventoryQuality();
@@ -38,16 +53,17 @@ public class GildedRoseTest {
         GildedRose app = new GildedRose(items);
         app.updateInventoryQuality();
         // TODO: Should the value increase by two on sellDate? Bug or feature?
-//        assertEquals(2, app.items[0].getQuality());
+        assertEquals(2, app.items[0].getQuality());
         assertEquals(2, app.items[1].getQuality());
     }
 
     @Test
     public void qualityOfItemCannotBeHigherThan50() {
-        Item[] items = new Item[] { new Item("Aged Brie", 0, 50)};
+        Item[] items = new Item[] { new Item("Aged Brie", 0, 50), new Item("Backstage passes to a TAFKAL80ETC concert", 1, 49)};
         GildedRose app = new GildedRose(items);
         app.updateInventoryQuality();
         assertEquals(50, app.items[0].getQuality());
+        assertEquals(50, app.items[1].getQuality());
     }
 
     @Test
@@ -93,6 +109,17 @@ public class GildedRoseTest {
         app.updateInventoryQuality();
         assertEquals(0, app.items[0].getQuality());
         assertEquals(0, app.items[1].getQuality());
+    }
+
+    @Test
+    public void backStagePassesDecreaseBy1InQualityWhenMoreThan10DaysLeft() {
+        Item[] items = new Item[]{
+                new Item("Backstage passes to a TAFKAL80ETC concert", 11, 2),
+                new Item("Backstage passes to a TAFKAL80ETC concert", 50, 2)};
+        GildedRose app = new GildedRose(items);
+        app.updateInventoryQuality();
+        assertEquals(3, app.items[0].getQuality());
+        assertEquals(3, app.items[1].getQuality());
     }
 
 
