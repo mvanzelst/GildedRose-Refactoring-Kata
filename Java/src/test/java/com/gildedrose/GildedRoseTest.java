@@ -1,8 +1,8 @@
 package com.gildedrose;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class GildedRoseTest {
 
@@ -10,56 +10,56 @@ public class GildedRoseTest {
     public void qualityOfItemCannotBeNegative() {
         Item[] items = new Item[] { new Item("foo", 0, 1), new Item("foo", 1, 0)};
         GildedRose app = new GildedRose(items);
-        app.updateQuality();
-        assertEquals(0, app.items[0].quality);
-        assertEquals(0, app.items[1].quality);
+        app.updateInventoryQuality();
+        assertEquals(0, app.items[0].getQuality());
+        assertEquals(0, app.items[1].getQuality());
     }
 
     @Test
     public void qualityDegradesByOneWhenSellByDateNotPassed() {
         Item[] items = new Item[] { new Item("foo", 1, 2) };
         GildedRose app = new GildedRose(items);
-        app.updateQuality();
-        assertEquals(1, app.items[0].quality);
+        app.updateInventoryQuality();
+        assertEquals(1, app.items[0].getQuality());
     }
 
     @Test
     public void qualityDegradesTwiceAsFastWhenPastSellByDate() {
         Item[] items = new Item[] { new Item("foo", 0, 3), new Item("foo", -1, 3) };
         GildedRose app = new GildedRose(items);
-        app.updateQuality();
-        assertEquals(1, app.items[0].quality);
-        assertEquals(1, app.items[1].quality);
+        app.updateInventoryQuality();
+        assertEquals(1, app.items[0].getQuality());
+        assertEquals(1, app.items[1].getQuality());
     }
 
     @Test
     public void agedBrieIncreasesInQualityTheOlderItGets() {
         Item[] items = new Item[] { new Item("Aged Brie", 0, 1),  new Item("Aged Brie", 1, 1)};
         GildedRose app = new GildedRose(items);
-        app.updateQuality();
+        app.updateInventoryQuality();
         // TODO: Should the value increase by two on sellDate? Bug or feature?
-//        assertEquals(2, app.items[0].quality);
-        assertEquals(2, app.items[1].quality);
+//        assertEquals(2, app.items[0].getQuality());
+        assertEquals(2, app.items[1].getQuality());
     }
 
     @Test
     public void qualityOfItemCannotBeHigherThan50() {
         Item[] items = new Item[] { new Item("Aged Brie", 0, 50)};
         GildedRose app = new GildedRose(items);
-        app.updateQuality();
-        assertEquals(50, app.items[0].quality);
+        app.updateInventoryQuality();
+        assertEquals(50, app.items[0].getQuality());
     }
 
     @Test
     public void sulfurasNeverDegradesInQuality() {
-        Item[] items = new Item[]{ new Item("Sulfuras, Hand of Ragnaros", 0, 40),
-                new Item("Sulfuras, Hand of Ragnaros", 1, 40),
-                new Item("Sulfuras, Hand of Ragnaros", -1, 40)};
+        Item[] items = new Item[]{ new Item("Sulfuras, Hand of Ragnaros", 0, 80),
+                new Item("Sulfuras, Hand of Ragnaros", 1, 80),
+                new Item("Sulfuras, Hand of Ragnaros", -1, 80)};
         GildedRose app = new GildedRose(items);
-        app.updateQuality();
-        assertEquals(40, app.items[0].quality);
-        assertEquals(40, app.items[1].quality);
-        assertEquals(40, app.items[2].quality);
+        app.updateInventoryQuality();
+        assertEquals(80, app.items[0].getQuality());
+        assertEquals(80, app.items[1].getQuality());
+        assertEquals(80, app.items[2].getQuality());
     }
 
     @Test
@@ -68,9 +68,9 @@ public class GildedRoseTest {
                 new Item("Backstage passes to a TAFKAL80ETC concert", 6, 2),
                 new Item("Backstage passes to a TAFKAL80ETC concert", 10, 2)};
         GildedRose app = new GildedRose(items);
-        app.updateQuality();
-        assertEquals(4, app.items[0].quality);
-        assertEquals(4, app.items[1].quality);
+        app.updateInventoryQuality();
+        assertEquals(4, app.items[0].getQuality());
+        assertEquals(4, app.items[1].getQuality());
     }
 
     @Test
@@ -79,9 +79,9 @@ public class GildedRoseTest {
                 new Item("Backstage passes to a TAFKAL80ETC concert", 5, 2),
                 new Item("Backstage passes to a TAFKAL80ETC concert", 1, 2)};
         GildedRose app = new GildedRose(items);
-        app.updateQuality();
-        assertEquals(5, app.items[0].quality);
-        assertEquals(5, app.items[1].quality);
+        app.updateInventoryQuality();
+        assertEquals(5, app.items[0].getQuality());
+        assertEquals(5, app.items[1].getQuality());
     }
 
     @Test
@@ -90,9 +90,9 @@ public class GildedRoseTest {
                 new Item("Backstage passes to a TAFKAL80ETC concert", -1, 2),
                 new Item("Backstage passes to a TAFKAL80ETC concert", 0, 2)};
         GildedRose app = new GildedRose(items);
-        app.updateQuality();
-        assertEquals(0, app.items[0].quality);
-        assertEquals(0, app.items[1].quality);
+        app.updateInventoryQuality();
+        assertEquals(0, app.items[0].getQuality());
+        assertEquals(0, app.items[1].getQuality());
     }
 
 
